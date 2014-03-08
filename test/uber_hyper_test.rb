@@ -37,7 +37,7 @@ describe "Section 3.6: The <uber> Element" do
 
 end
 
-describe "Section 3.7 The <data> Element" do
+describe "Section 3.7 The <data> Element " do
 
   describe "A valid Uber message SHOULD contain at least one <data> element" do
     let(:uber_msg) { "<uber version='1.0'><data></data></uber>" }
@@ -72,3 +72,20 @@ describe "Section 3.7 The <data> Element" do
   end
 end
 
+describe "3.8. The <error> Element" do
+  describe "When present, it SHOULD contain one or more <data> child elements" do
+    let(:data_in_error) { "<uber version='1.0'><error><data></data></error></uber>" }
+    let(:error_missing_data) { "<uber><data></data><error></error></uber>" }
+
+    it "it will raise MissingDataError if no data present" do
+      assert_raises(UberHyper::MissingDataError) do
+        UberHyper::Message.new(error_missing_data)
+      end
+    end
+
+    it "it will true if at least one data child is present" do
+        error = UberHyper::Message.new(data_in_error)
+        assert_equal error.valid_error?, true
+    end
+  end
+end

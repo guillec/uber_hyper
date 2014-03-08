@@ -6,10 +6,32 @@ module UberHyper
   MissingDataError = Class.new(StandardError)
 
   class Message
+
+    class Error
+      def initialize(error="")
+        @error = error
+      end
+
+      def data
+        @error.children.search("data").first
+      end
+    end
+
     def initialize(message="<uber></uber>")
       @msg = Nokogiri::XML::Document.parse(message)
       raise MissingRootError unless valid_root?
       raise MissingDataError unless valid_data?
+      raise MissingDataError unless valid_error?
+    end
+
+    def version
+      "1.0"
+    end
+
+    def error
+      error_node = @msg.root.children.search("error").first
+      return nil if error_node.nil?
+      return Error.new(error_node)
     end
 
     def valid_root? 
@@ -22,11 +44,12 @@ module UberHyper
       return false
     end
 
-    def version
-      "1.0"
+    def valid_error?
+      return true if error.nil?
+      return false if error.data.nil?
+      return true
     end
 
-    private
     def data_exist?
       @msg.root.children.search("data").count > 0
     end
