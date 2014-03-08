@@ -1,0 +1,15 @@
+tmux has-session -t uber_hyper 
+if [ $? != 0 ]
+then
+  tmux new-session -s uber_hyper -n editor -d
+
+  tmux send-keys -t uber_hyper 'cd ~/Projects/uber_hyper' C-m 
+  tmux send-keys -t uber_hyper 'vim ~/Projects/uber_hyper' C-m
+
+  tmux new-window -n console -t uber_hyper
+  tmux send-keys -t uber_hyper:2 'cd ~/Projects/uber_hyper' C-m 
+  tmux send-keys -t uber_hyper:2 'bundle console' C-m 
+
+  tmux select-window -t uber_hyper:1
+fi
+tmux attach -t uber_hyper
