@@ -13,8 +13,42 @@ module UberHyper
       end
 
       def data
-        @error.children.search("data").first
+        if @error.children.search("data").first
+          Data.new(@error.children.search("data"))
+        else
+          return nil
+        end
       end
+    end
+
+    class Data
+      include Enumerable
+
+      def initialize(*data)
+        @data = data
+      end
+
+      def each(&block)
+        @data.each do |d|
+          new_d = DataElement.new d
+          block.call(new_d)
+        end
+      end
+    end
+
+    class DataElement
+      def initialize(element)
+        @element = element
+      end
+      
+      def id
+        @element.attributes["id"].value
+      end
+
+      def value
+        @element.content
+      end
+
     end
 
     def initialize(message="<uber></uber>")
@@ -28,8 +62,14 @@ module UberHyper
       "1.0"
     end
 
+    def data
+      @msg.root.children.xpath("//data").map do |d|
+        DataElement.new(d)
+      end
+    end
+
     def error
-      error_node = @msg.root.children.search("error").first
+      error_node = @msg.children.search("error").first
       return nil if error_node.nil?
       return Error.new(error_node)
     end
@@ -50,6 +90,7 @@ module UberHyper
       return true
     end
 
+    private
     def data_exist?
       @msg.root.children.search("data").count > 0
     end
