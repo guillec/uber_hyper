@@ -7,7 +7,7 @@ module UberHyper
 
   class Message
 
-    class Error
+    class ErrorElement
       def initialize(error="")
         @error = error
       end
@@ -56,7 +56,7 @@ module UberHyper
     def error
       error_node = @msg.children.search("error").first
       return nil if error_node.nil?
-      return Error.new(error_node)
+      return ErrorElement.new(error_node)
     end
 
     def valid_root? 

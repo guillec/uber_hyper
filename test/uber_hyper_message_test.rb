@@ -8,7 +8,7 @@ describe "UberHyper::Message" do
 
     it "can returns a error" do
       message = UberHyper::Message.new(uber_message)
-      assert_instance_of UberHyper::Message::Error, message.error
+      assert_instance_of UberHyper::Message::ErrorElement, message.error
     end
 
     it "returns nil if no error element" do
@@ -20,7 +20,7 @@ describe "UberHyper::Message" do
   describe "data" do
     let(:uber_message) { "<uber version='1.0'><data></data></uber>" }
 
-    it "can return a error" do
+    it "can return an array of data" do
       message = UberHyper::Message.new(uber_message)
       assert_instance_of Array, message.data
     end
