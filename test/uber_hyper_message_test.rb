@@ -8,11 +8,13 @@ describe "UberHyper::Message" do
 
     it "can returns a error" do
       message = UberHyper::Message.new(uber_message)
+
       assert_instance_of UberHyper::Message::ErrorElement, message.error
     end
 
     it "returns nil if no error element" do
       message = UberHyper::Message.new(no_error)
+
       assert_equal message.error, nil
     end
   end
@@ -22,6 +24,8 @@ describe "UberHyper::Message" do
 
     it "can return an array of data" do
       message = UberHyper::Message.new(uber_message)
+
+      assert_equal message.data.count, 1
       assert_instance_of Array, message.data
     end
   end

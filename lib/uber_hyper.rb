@@ -77,7 +77,7 @@ module UberHyper
 
     private
     def data_exist?
-      @msg.root.children.search("data").count > 0
+      data.count > 0
     end
 
     def uber_parent?
