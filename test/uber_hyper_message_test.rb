@@ -22,7 +22,7 @@ describe "UberHyper::Message" do
 
     it "can return a error" do
       message = UberHyper::Message.new(uber_message)
-      assert_instance_of UberHyper::Message::Data, message.data
+      assert_instance_of Array, message.data
     end
   end
 end

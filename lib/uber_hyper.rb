@@ -14,24 +14,9 @@ module UberHyper
 
       def data
         if @error.children.search("data").first
-          Data.new(@error.children.search("data"))
+          DataElement.new(@error.children.search("data"))
         else
           return nil
-        end
-      end
-    end
-
-    class Data
-      include Enumerable
-
-      def initialize(*data)
-        @data = data
-      end
-
-      def each(&block)
-        @data.each do |d|
-          new_d = DataElement.new d
-          block.call(new_d)
         end
       end
     end
